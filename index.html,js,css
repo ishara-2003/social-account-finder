@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Workers Social Finder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Galaxy Workers Social Finder</h1>
+            <div>
+                <select id="language" class="bg-blue-500 p-2 rounded">
+                    <option value="si">සිංහල</option>
+                    <option value="en">English</option>
+                </select>
+                <a href="#integration" class="ml-4">WhatsApp ඒකාබද්ධ කිරීම</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-6">
+        <!-- Search WhatsApp Numbers -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4" id="search-title">WhatsApp අංක සෙවීම</h2>
+            <input type="text" id="phone-input" class="w-full p-2 border rounded mb-4" placeholder="අංකය ඇතුලත් කරන්න (Ex: 0712345678)">
+            <select id="country-code" class="w-full p-2 border rounded mb-4">
+                <option value="+94">+94 (ශ්‍රී ලංකා)</option>
+                <!-- Add more country codes dynamically -->
+            </select>
+            <button id="search-btn" class="bg-blue-600 text-white p-2 rounded">සෙවීම</button>
+            <div id="search-results" class="mt-4"></div>
+        </section>
+
+        <!-- Message Sending -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4" id="message-title">පණිවිඩ යැවීම</h2>
+            <textarea id="message-input" class="w-full p-2 border rounded mb-4" placeholder="පණිවිඩය ටයිප් කරන්න"></textarea>
+            <input type="file" id="media-input" class="mb-4" accept="image/*,video/*,audio/*">
+            <button id="send-btn" class="bg-green-600 text-white p-2 rounded">යවන්න</button>
+            <button id="bulk-send-btn" class="bg-green-600 text-white p-2 rounded ml-2">බල්ක් යවන්න</button>
+        </section>
+
+        <!-- Registration -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4" id="register-title">ලියාපදිංචි වීම</h2>
+            <input type="text" id="first-name" class="w-full p-2 border rounded mb-4" placeholder="පළමු නම">
+            <input type="text" id="last-name" class="w-full p-2 border rounded mb-4" placeholder="දෙවන නම">
+            <input type="text" id="username" class="w-full p-2 border rounded mb-4" placeholder="පරිශීලක නම">
+            <input type="password" id="password" class="w-full p-2 border rounded mb-4" placeholder="මුරපදය">
+            <button id="register-btn" class="bg-blue-600 text-white p-2 rounded">ලියාපදිංචි වන්න</button>
+        </section>
+
+        <!-- Payment Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4" id="payment-title">ගෙවීම්</h2>
+            <button id="payment-details-btn" class="bg-blue-600 text-white p-2 rounded">ගෙවීම් තොරතුරු</button>
+            <div id="payment-details" class="hidden mt-4">
+                <p>බැංකු තොරතුරු: BOC, WVI Sandaruwan, Acc No: 7748756, Padukka Branch</p>
+                <p>සම්බන්ධතා අංකය: 0741587427</p>
+                <p>ගෙවීම් ස්ලිප් උඩුගත කරන්න:</p>
+                <input type="file" id="payment-slip" accept=".pdf,image/*">
+                <button id="upload-slip-btn" class="bg-green-600 text-white p-2 rounded mt-2">උඩුගත කරන්න</button>
+            </div>
+        </section>
+
+        <!-- Premium Plans -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4" id="premium-title">Premium ගිණුම්</h2>
+            <ul>
+                <li>රු. 20: දිනකට ගිණුම් 100+</li>
+                <li>රු. 50: දිනකට ගිණුම් 250+</li>
+                <li>රු. 90: දිනකට ගිණුම් 400+</li>
+                <li>රු. 150: දිනකට ගිණුම් 700+</li>
+                <li>රු. 210: දිනකට ගිණුම් 1050+</li>
+            </ul>
+        </section>
+
+        <!-- WhatsApp Integration Info -->
+        <section id="integration" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4" id="integration-title">WhatsApp ඒකාබද්ධ කිරීම</h2>
+            <p>WhatsApp Business ID, Phone ID, සහ Access Token ලබා ගැනීමට <a href="https://developers.facebook.com/docs/whatsapp" target="_blank">Meta for Developers</a> වෙත යන්න.</p>
+            <button id="integrate-btn" class="bg-blue-600 text-white p-2 rounded mt-4">WhatsApp ඒකාබද්ධ කරන්න</button>
+        </section>
+    </div>
+
+    <script>
+        // Language Toggle
+        document.getElementById('language').addEventListener('change', function() {
+            const lang = this.value;
+            document.getElementById('search-title').textContent = lang === 'si' ? 'WhatsApp අංක සෙවීම' : 'Search WhatsApp Numbers';
+            document.getElementById('message-title').textContent = lang === 'si' ? 'පණිවිඩ යැවීම' : 'Send Messages';
+            document.getElementById('register-title').textContent = lang === 'si' ? 'ලියාපදිංචි වීම' : 'Registration';
+            document.getElementById('payment-title').textContent = lang === 'si' ? 'ගෙවීම්' : 'Payments';
+            document.getElementById('premium-title').textContent = lang === 'si' ? 'Premium ගිණුම්' : 'Premium Plans';
+            document.getElementById('integration-title').textContent = lang === 'si' ? 'WhatsApp ඒකාබද්ධ කිරීම' : 'WhatsApp Integration';
+        });
+
+        // WhatsApp API Integration (Simplified Simulation)
+        document.getElementById('integrate-btn').addEventListener('click', async () => {
+            alert('WhatsApp ඒකාබද්ධ කිරීම ආරම්භ විය. Meta Developer API හරහා ස්වයංක්‍රීයව ඒකාබද්ධ වේ.');
+            // Simulate Meta API call (replace with actual Meta API integration)
+            // Example: fetch('https://graph.facebook.com/v13.0/...').then(...)
+        });
+
+        // Search WhatsApp Numbers
+        document.getElementById('search-btn').addEventListener('click', () => {
+            const phone = document.getElementById('phone-input').value;
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '';
+
+            if (phone.length === 10) {
+                resultsDiv.innerHTML = `<p>අංකය: ${phone} - ගිණුම: Sample User</p>`;
+            } else if (phone.length > 0) {
+                resultsDiv.innerHTML = `<p>ආසන්නතම අංක: ${phone}123 - ගිණුම: Sample User 1</p>
+                                        <p>ආසන්නතම අංක: ${phone}456 - ගිණුම: Sample User 2</p>`;
+            } else {
+                resultsDiv.innerHTML = `<p>යෝජිත අංක: 0712345678 - ගිණුම: Sample User 1</p>
+                                        <p>යෝජිත අංක: 0712345679 - ගිණුම: Sample User 2</p>`;
+            }
+        });
+
+        // Send Message
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const message = document.getElementById('message-input').value;
+            alert(`පණිවිඩය යවන ලදි: ${message}`);
+        });
+
+        // Bulk Send
+        document.getElementById('bulk-send-btn').addEventListener('click', () => {
+            const message = document.getElementById('message-input').value;
+            alert(`බල්ක් පණිවිඩ යවන ලදි: ${message}`);
+        });
+
+        // Payment Details
+        document.getElementById('payment-details-btn').addEventListener('click', () => {
+            document.getElementById('payment-details').classList.toggle('hidden');
+        });
+
+        // Upload Slip
+        document.getElementById('upload-slip-btn').addEventListener('click', () => {
+            const file = document.getElementById('payment-slip').files[0];
+            if (file) {
+                alert('ගෙවීම් ස්ලිප් උඩුගත කරන ලදි. තහවුරු කිරීමෙන් පසු ලියාපදිංචිය සම්පූර්ණ වේ.');
+            } else {
+                alert('කරුණාකර ගෙවීම් ස්ලිප් උඩුගත කරන්න.');
+            }
+        });
+
+        // Registration
+        document.getElementById('register-btn').addEventListener('click', () => {
+            alert('ලියාපදිංචිය සම්පූර්ණයි! ගෙවීම් ස්ලිප් උඩුගත කරන්න.');
+        });
+    </script>
+</body>
+</html>
