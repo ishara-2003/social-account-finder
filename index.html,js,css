@@ -3,157 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Workers Social Finder</title>
+    <title>Galaxy Workers - WhatsApp Business</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E3A8A',
+                        secondary: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-100 font-sans">
     <!-- Navigation Bar -->
-    <nav class="bg-blue-600 text-white p-4">
+    <nav class="bg-primary text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Galaxy Workers Social Finder</h1>
-            <div>
-                <select id="language" class="bg-blue-500 p-2 rounded">
-                    <option value="si">සිංහල</option>
-                    <option value="en">English</option>
-                </select>
-                <a href="#integration" class="ml-4">WhatsApp ඒකාබද්ධ කිරීම</a>
+            <h1 class="text-2xl font-bold">Galaxy Workers</h1>
+            <div class="flex space-x-4">
+                <button id="langToggle" class="px-4 py-2 bg-secondary rounded hover:bg-green-600 transition">English</button>
+                <a href="#whatsapp-info" class="px-4 py-2 hover:bg-blue-700">WhatsApp Integration Info</a>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container mx-auto p-6">
-        <!-- Search WhatsApp Numbers -->
-        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-xl font-semibold mb-4" id="search-title">WhatsApp අංක සෙවීම</h2>
-            <input type="text" id="phone-input" class="w-full p-2 border rounded mb-4" placeholder="අංකය ඇතුලත් කරන්න (Ex: 0712345678)">
-            <select id="country-code" class="w-full p-2 border rounded mb-4">
-                <option value="+94">+94 (ශ්‍රී ලංකා)</option>
-                <!-- Add more country codes dynamically -->
-            </select>
-            <button id="search-btn" class="bg-blue-600 text-white p-2 rounded">සෙවීම</button>
-            <div id="search-results" class="mt-4"></div>
+        <!-- WhatsApp Number Search -->
+        <section class="mb-8">
+            <h2 id="searchTitle" class="text-2xl font-bold mb-4">WhatsApp අංක සෙවීම</h2>
+            <div class="flex space-x-4 mb-4">
+                <select id="countryCode" class="border p-2 rounded">
+                    <option value="+94">+94 (Sri Lanka)</option>
+                    <option value="+1">+1 (USA)</option>
+                    <option value="+91">+91 (India)</option>
+                    <!-- Add 200 country codes -->
+                </select>
+                <input id="phoneInput" type="text" placeholder="WhatsApp අංකය ඇතුලත් කරන්න" class="border p-2 rounded w-full">
+                <button id="searchBtn" class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600 transition">සෙවීම</button>
+            </div>
+            <div id="searchResults" class="bg-white p-4 rounded shadow"></div>
         </section>
 
-        <!-- Message Sending -->
-        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-xl font-semibold mb-4" id="message-title">පණිවිඩ යැවීම</h2>
-            <textarea id="message-input" class="w-full p-2 border rounded mb-4" placeholder="පණිවිඩය ටයිප් කරන්න"></textarea>
-            <input type="file" id="media-input" class="mb-4" accept="image/*,video/*,audio/*">
-            <button id="send-btn" class="bg-green-600 text-white p-2 rounded">යවන්න</button>
-            <button id="bulk-send-btn" class="bg-green-600 text-white p-2 rounded ml-2">බල්ක් යවන්න</button>
+        <!-- Messaging Section -->
+        <section class="mb-8">
+            <h2 id="messageTitle" class="text-2xl font-bold mb-4">පණිවිඩ යැවීම</h2>
+            <textarea id="messageInput" placeholder="පණිවිඩය ටයිප් කරන්න" class="border p-2 rounded w-full mb-4"></textarea>
+            <input id="fileInput" type="file" accept="image/*,video/*,audio/*" class="mb-4">
+            <button id="sendBulkBtn" class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600 transition">Bulk යැවීම</button>
+            <button id="sendSingleBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition">තනි යැවීම</button>
         </section>
 
-        <!-- Registration -->
-        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-xl font-semibold mb-4" id="register-title">ලියාපදිංචි වීම</h2>
-            <input type="text" id="first-name" class="w-full p-2 border rounded mb-4" placeholder="පළමු නම">
-            <input type="text" id="last-name" class="w-full p-2 border rounded mb-4" placeholder="දෙවන නම">
-            <input type="text" id="username" class="w-full p-2 border rounded mb-4" placeholder="පරිශීලක නම">
-            <input type="password" id="password" class="w-full p-2 border rounded mb-4" placeholder="මුරපදය">
-            <button id="register-btn" class="bg-blue-600 text-white p-2 rounded">ලියාපදිංචි වන්න</button>
+        <!-- WhatsApp Integration -->
+        <section class="mb-8">
+            <h2 id="integrateTitle" class="text-2xl font-bold mb-4">WhatsApp ඒකාබද්ධ කිරීම</h2>
+            <button id="integrateBtn" class="bg-gradient-to-r from-secondary to-green-400 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300 text-lg font-bold uppercase">WhatsApp ඒකාබද්ධ කරන්න</button>
+        </section>
+
+        <!-- Registration Section -->
+        <section class="mb-8">
+            <h2 id="registerTitle" class="text-2xl font-bold mb-4">ලියාපදිංචි වීම</h2>
+            <form id="registerForm" class="space-y-4">
+                <input type="text" placeholder="මුල් නම" class="border p-2 rounded w-full">
+                <input type="text" placeholder="වාසගම" class="border p-2 rounded w-full">
+                <input type="text" placeholder="පරිශීලක නම" class="border p-2 rounded w-full">
+                <input type="email" placeholder="විද්‍යුත් තැපෑල" class="border p-2 rounded w-full">
+                <input type="tel" placeholder="දුරකථන අංකය" class="border p-2 rounded w-full">
+                <input type="password" placeholder="මුරපදය" class="border p-2 rounded w-full">
+                <button type="submit" class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600 transition">ලියාපදිංචි වන්න</button>
+            </form>
         </section>
 
         <!-- Payment Section -->
-        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-xl font-semibold mb-4" id="payment-title">ගෙවීම්</h2>
-            <button id="payment-details-btn" class="bg-blue-600 text-white p-2 rounded">ගෙවීම් තොරතුරු</button>
-            <div id="payment-details" class="hidden mt-4">
-                <p>බැංකු තොරතුරු: BOC, WVI Sandaruwan, Acc No: 7748756, Padukka Branch</p>
-                <p>සම්බන්ධතා අංකය: 0741587427</p>
-                <p>ගෙවීම් ස්ලිප් උඩුගත කරන්න:</p>
-                <input type="file" id="payment-slip" accept=".pdf,image/*">
-                <button id="upload-slip-btn" class="bg-green-600 text-white p-2 rounded mt-2">උඩුගත කරන්න</button>
+        <section class="mb-8">
+            <h2 id="paymentTitle" class="text-2xl font-bold mb-4">ගෙවීම්</h2>
+            <button id="paymentDetailsBtn" class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600 transition">ගෙවීම් විස්තර පෙන්වන්න</button>
+            <div id="paymentDetails" class="hidden bg-white p-4 rounded shadow mt-4">
+                <p><strong>සිංහල:</strong> ගෙවීම් සිදු කිරීමට, පහත බැංකු ගිණුමට Rs. 100 බැගින් ගෙවන්න. ගෙවීමෙන් පසු slip එක upload කරන්න.</p>
+                <p><strong>English:</strong> To register, pay Rs. 100 to the following bank account and upload the payment slip.</p>
+                <p>Bank: BOC, Account Name: WVI Sandaruwan, Account No: 7748756, Branch: Padukka</p>
+                <input id="slipInput" type="file" accept="image/*,application/pdf" class="my-4">
+                <button id="verifySlipBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition">Slip Verify කරන්න</button>
             </div>
         </section>
 
         <!-- Premium Plans -->
-        <section class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-xl font-semibold mb-4" id="premium-title">Premium ගිණුම්</h2>
-            <ul>
-                <li>රු. 20: දිනකට ගිණුම් 100+</li>
-                <li>රු. 50: දිනකට ගිණුම් 250+</li>
-                <li>රු. 90: දිනකට ගිණුම් 400+</li>
-                <li>රු. 150: දිනකට ගිණුම් 700+</li>
-                <li>රු. 210: දිනකට ගිණුම් 1050+</li>
-            </ul>
+        <section class="mb-8">
+            <h2 id="premiumTitle" class="text-2xl font-bold mb-4">Premium Plans</h2>
+            <div id="premiumPlans" class="bg-white p-4 rounded shadow">
+                <p id="premiumMessage">Premium plans ලියාපදිංචි වීමෙන් පසු පෙන්වනු ඇත</p>
+                <div id="premiumList" class="hidden">
+                    <p>Premium: 100 accounts - Rs. 20, 250 accounts - Rs. 50, 400 accounts - Rs. 90, 700 accounts - Rs. 150, 1050 accounts - Rs. 210</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="mb-8">
+            <h2 id="contactTitle" class="text-2xl font-bold mb-4">අප හා සම්බන්ධ වන්න</h2>
+            <p>Galaxy Workers: 0741587427</p>
         </section>
 
         <!-- WhatsApp Integration Info -->
-        <section id="integration" class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold mb-4" id="integration-title">WhatsApp ඒකාබද්ධ කිරීම</h2>
-            <p>WhatsApp Business ID, Phone ID, සහ Access Token ලබා ගැනීමට <a href="https://developers.facebook.com/docs/whatsapp" target="_blank">Meta for Developers</a> වෙත යන්න.</p>
-            <button id="integrate-btn" class="bg-blue-600 text-white p-2 rounded mt-4">WhatsApp ඒකාබද්ධ කරන්න</button>
+        <section id="whatsapp-info" class="mb-8">
+            <h2 id="infoTitle" class="text-2xl font-bold mb-4">WhatsApp ඒකාබද්ධ කිරීම ගැන තොරතුරු</h2>
+            <p><strong>සිංහල:</strong> WhatsApp Business ID, Phone ID, සහ Access Token ලබා ගැනීමට Meta for Developers වෙබ් අඩවියට පිවිසෙන්න.</p>
+            <p><strong>English:</strong> Visit Meta for Developers to get your WhatsApp Business ID, Phone ID, and Access Token.</p>
+            <a href="https://developers.facebook.com/docs/whatsapp" target="_blank" class="text-blue-500">Meta for Developers</a>
         </section>
     </div>
 
     <script>
+        // Simulated registration status
+        let isRegistered = false;
+
         // Language Toggle
-        document.getElementById('language').addEventListener('change', function() {
-            const lang = this.value;
-            document.getElementById('search-title').textContent = lang === 'si' ? 'WhatsApp අංක සෙවීම' : 'Search WhatsApp Numbers';
-            document.getElementById('message-title').textContent = lang === 'si' ? 'පණිවිඩ යැවීම' : 'Send Messages';
-            document.getElementById('register-title').textContent = lang === 'si' ? 'ලියාපදිංචි වීම' : 'Registration';
-            document.getElementById('payment-title').textContent = lang === 'si' ? 'ගෙවීම්' : 'Payments';
-            document.getElementById('premium-title').textContent = lang === 'si' ? 'Premium ගිණුම්' : 'Premium Plans';
-            document.getElementById('integration-title').textContent = lang === 'si' ? 'WhatsApp ඒකාබද්ධ කිරීම' : 'WhatsApp Integration';
+        const langToggle = document.getElementById('langToggle');
+        let isSinhala = true;
+        langToggle.addEventListener('click', () => {
+            isSinhala = !isSinhala;
+            langToggle.textContent = isSinhala ? 'English' : 'සිංහල';
+            document.getElementById('searchTitle').textContent = isSinhala ? 'WhatsApp අංක සෙවීම' : 'WhatsApp Number Search';
+            document.getElementById('messageTitle').textContent = isSinhala ? 'පණිවිඩ යැවීම' : 'Send Messages';
+            document.getElementById('integrateTitle').textContent = isSinhala ? 'WhatsApp ඒකාබද්ධ කිරීම' : 'WhatsApp Integration';
+            document.getElementById('registerTitle').textContent = isSinhala ? 'ලියාපදිංචි වීම' : 'Registration';
+            document.getElementById('paymentTitle').textContent = isSinhala ? 'ගෙවීම්' : 'Payments';
+            document.getElementById('premiumTitle').textContent = isSinhala ? 'Premium Plans' : 'Premium Plans';
+            document.getElementById('contactTitle').textContent = isSinhala ? 'අප හා සම්බන්ධ වන්න' : 'Contact Us';
+            document.getElementById('infoTitle').textContent = isSinhala ? 'WhatsApp ඒකාබද්ධ කිරීම ගැන තොරතුරු' : 'WhatsApp Integration Info';
+            document.getElementById('premiumMessage').textContent = isSinhala ? 'Premium plans ලියාපදිංචි වීමෙන් පසු පෙන්වනු ඇත' : 'Premium plans will be shown after registration';
+            document.getElementById('integrateBtn').textContent = isSinhala ? 'WhatsApp ඒකාබද්ධ කරන්න' : 'Integrate WhatsApp';
         });
 
-        // WhatsApp API Integration (Simplified Simulation)
-        document.getElementById('integrate-btn').addEventListener('click', async () => {
-            alert('WhatsApp ඒකාබද්ධ කිරීම ආරම්භ විය. Meta Developer API හරහා ස්වයංක්‍රීයව ඒකාබද්ධ වේ.');
-            // Simulate Meta API call (replace with actual Meta API integration)
-            // Example: fetch('https://graph.facebook.com/v13.0/...').then(...)
-        });
-
-        // Search WhatsApp Numbers
-        document.getElementById('search-btn').addEventListener('click', () => {
-            const phone = document.getElementById('phone-input').value;
-            const resultsDiv = document.getElementById('search-results');
-            resultsDiv.innerHTML = '';
-
-            if (phone.length === 10) {
-                resultsDiv.innerHTML = `<p>අංකය: ${phone} - ගිණුම: Sample User</p>`;
-            } else if (phone.length > 0) {
-                resultsDiv.innerHTML = `<p>ආසන්නතම අංක: ${phone}123 - ගිණුම: Sample User 1</p>
-                                        <p>ආසන්නතම අංක: ${phone}456 - ගිණුම: Sample User 2</p>`;
-            } else {
-                resultsDiv.innerHTML = `<p>යෝජිත අංක: 0712345678 - ගිණුම: Sample User 1</p>
-                                        <p>යෝජිත අංක: 0712345679 - ගිණුම: Sample User 2</p>`;
+        // WhatsApp Number Search
+        const searchBtn = document.getElementById('searchBtn');
+        const phoneInput = document.getElementById('phoneInput');
+        const countryCode = document.getElementById('countryCode');
+        const searchResults = document.getElementById('searchResults');
+        let searchedNumbers = [];
+        searchBtn.addEventListener('click', async () => {
+            if (!isRegistered) {
+                alert(isSinhala ? 'කරුණාකර පළමුව ලියාපදිංචි වන්න' : 'Please register first');
+                return;
+            }
+            const phone = countryCode.value + phoneInput.value;
+            searchResults.innerHTML = '<div class="flex justify-center"><div class="animate-spin h-5 w-5 border-4 border-secondary rounded-full"></div></div>';
+            try {
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+                searchedNumbers = data.accounts || [];
+                const display = searchedNumbers.slice(0, 35).map((acc, i) => 
+                    `<p class="${acc.repeated ? 'text-red-500' : ''}">${i + 1}. ${acc.number} - ${acc.name}</p>`
+                ).join('');
+                searchResults.innerHTML = display || '<p>No accounts found</p>';
+            } catch (error) {
+                searchResults.innerHTML = '<p>Error: Could not fetch data</p>';
             }
         });
 
-        // Send Message
-        document.getElementById('send-btn').addEventListener('click', () => {
-            const message = document.getElementById('message-input').value;
-            alert(`පණිවිඩය යවන ලදි: ${message}`);
+        // Messaging
+        const sendBulkBtn = document.getElementById('sendBulkBtn');
+        const sendSingleBtn = document.getElementById('sendSingleBtn');
+        const messageInput = document.getElementById('messageInput');
+        const fileInput = document.getElementById('fileInput');
+        sendBulkBtn.addEventListener('click', async () => {
+            if (!isRegistered) {
+                alert(isSinhala ? 'කරුණාකර පළමුව ලියාපදිංචි වන්න' : 'Please register first');
+                return;
+            }
+            const message = messageInput.value;
+            const file = fileInput.files[0];
+            try {
+                const response = await fetch('/api/send-bulk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numbers: searchedNumbers, message, file })
+                });
+                const data = await response.json();
+                alert('Bulk messages sent successfully!');
+                if (searchedNumbers.length > 250) {
+                    searchedNumbers = searchedNumbers.slice(200); // Auto-delete first 200
+                }
+            } catch (error) {
+                alert('Error sending messages');
+            }
         });
 
-        // Bulk Send
-        document.getElementById('bulk-send-btn').addEventListener('click', () => {
-            const message = document.getElementById('message-input').value;
-            alert(`බල්ක් පණිවිඩ යවන ලදි: ${message}`);
+        sendSingleBtn.addEventListener('click', async () => {
+            if (!isRegistered) {
+                alert(isSinhala ? 'කරුණාකර පළමුව ලියාපදිංචි වන්න' : 'Please register first');
+                return;
+            }
+            const message = messageInput.value;
+            const file = fileInput.files[0];
+            const selectedNumber = prompt('Enter number to send message to:');
+            try {
+                const response = await fetch('/api/send-single', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ number: selectedNumber, message, file })
+                });
+                const data = await response.json();
+                alert('Message sent successfully!');
+            } catch (error) {
+                alert('Error sending message');
+            }
         });
 
-        // Payment Details
-        document.getElementById('payment-details-btn').addEventListener('click', () => {
-            document.getElementById('payment-details').classList.toggle('hidden');
-        });
-
-        // Upload Slip
-        document.getElementById('upload-slip-btn').addEventListener('click', () => {
-            const file = document.getElementById('payment-slip').files[0];
-            if (file) {
-                alert('ගෙවීම් ස්ලිප් උඩුගත කරන ලදි. තහවුරු කිරීමෙන් පසු ලියාපදිංචිය සම්පූර්ණ වේ.');
-            } else {
-                alert('කරුණාකර ගෙවීම් ස්ලිප් උඩුගත කරන්න.');
+        // WhatsApp Integration
+        const integrateBtn = document.getElementById('integrateBtn');
+        integrateBtn.addEventListener('click', async () => {
+            if (!isRegistered) {
+                alert(isSinhala ? 'කරුණාකර පළමුව ලියාපදිංචි වන්න' : 'Please register first');
+                return;
+            }
+            try {
+                // Redirect to Meta OAuth flow (replace with your Meta App ID)
+                window.location.href = `https://www.facebook.com/v17.0/dialog/oauth?client_id=YOUR_META_APP_ID&redirect_uri=${encodeURIComponent(window.location.origin + '/api/integrate-callback')}&scope=whatsapp_business_messaging`;
+            } catch (error) {
+                alert('Error initiating WhatsApp integration');
             }
         });
 
         // Registration
-        document.getElementById('register-btn').addEventListener('click', () => {
-            alert('ලියාපදිංචිය සම්පූර්ණයි! ගෙවීම් ස්ලිප් උඩුගත කරන්න.');
+        const registerForm = document.getElementById('registerForm');
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            isRegistered = true;
+            document.getElementById('premiumMessage').classList.add('hidden');
+            document.getElementById('premiumList').classList.remove('hidden');
+            alert(isSinhala ? 'ලියාපදිංචි වීම සාර්ථකයි!' : 'Registration successful!');
+        });
+
+        // Payment Details
+        const paymentDetailsBtn = document.getElementById('paymentDetailsBtn');
+        const paymentDetails = document.getElementById('paymentDetails');
+        paymentDetailsBtn.addEventListener('click', () => {
+            paymentDetails.classList.toggle('hidden');
+        });
+
+        // Slip Verification
+        const verifySlipBtn = document.getElementById('verifySlipBtn');
+        verifySlipBtn.addEventListener('click', async () => {
+            const slipInput = document.getElementById('slipInput');
+            if (slipInput.files.length > 0) {
+                try {
+                    const response = await fetch('/api/verify-slip', {
+                        method: 'POST',
+                        body: slipInput.files[0]
+                    });
+                    const data = await response.json();
+                    if (data.valid) {
+                        isRegistered = true;
+                        document.getElementById('premiumMessage').classList.add('hidden');
+                        document.getElementById('premiumList').classList.remove('hidden');
+                        alert('Slip verified! Registration successful.');
+                    } else {
+                        alert('Error: Invalid account number in slip.');
+                    }
+                } catch (error) {
+                    alert('Error verifying slip');
+                }
+            }
+        });
+
+        // Country Codes (Sample)
+        const countryCodeSelect = document.getElementById('countryCode');
+        const codes = ['+94', '+1', '+91', '+44', '+81']; // Add 200 codes
+        codes.forEach(code => {
+            const option = document.createElement('option');
+            option.value = code;
+            option.textContent = code;
+            countryCodeSelect.appendChild(option);
         });
     </script>
-</body>
-</html>
